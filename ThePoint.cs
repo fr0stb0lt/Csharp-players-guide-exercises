@@ -22,7 +22,7 @@ public class Point
 	}
 
 
-    public float Origin { get; set; }
+    public Point() : this(0, 0) { }
 
 
     public float Xcoordinate
