@@ -86,7 +86,7 @@ class Door
     
     private int _lockCode;
 
-    public int LockCode { get => LockCode; set => LockCode = value; }
+    public int LockCode { get => _lockCode; set => _lockCode = value; }
     
     
     public Door(int lockCode)
