@@ -18,14 +18,21 @@ one.The passcode should only change if the correct, current code is given.
 
 Objectives:
 [x] Define a Door class that can keep track of whether it is locked, open, or closed.
-[] Make it so you can perform the four transitions defined above with methods.
-[] Build a constructor that requires the starting numeric passcode.
+
+[x] Make it so you can perform the four transitions defined above with methods.
+
+[x] Build a constructor that requires the starting numeric passcode.
+
 [] Build a method that will allow you to change the passcode for an existing door by supplying the
-current passcode and new passcode.Only change the passcode if the current passcode is correct.
+current passcode and new passcode. Only change the passcode if the current passcode is correct.
+
 [] Make your main method ask the user for a starting passcode, then create a new Door instance.Allow
 the user to attempt the four transitions described above (open, close, lock, unlock) and change the
 code by typing in text commands.
+
 */
+
+
 
 namespace theDoor;
 
@@ -35,24 +42,34 @@ class Program
 
     public static void Main(string[] args)
     {
+        bool exit = false;
 
-
-        Door newDoor = new Door();
+        
         Console.WriteLine("You stand in front of a magical door, with a keypad on the side.");
-
-        // menu with choices
         
-        
-        //Keep repeating menu
-        
-        
-            Console.WriteLine($"What would you like to do? The door is currently {newDoor.GetDoorState()}");
+        Door door = new Door(1234);
+        while (!exit)
+        {
+            
+            Console.WriteLine($"What would you like to do? The door is currently {door.GetDoorState()}");
             Console.WriteLine("Available actions:");
-            Console.WriteLine("Try to open the door:");
-            Console.WriteLine("Close the door:");
-            Console.WriteLine("Lock the door:");
-        
+            Console.WriteLine("1: Try to open the door:");
+            Console.WriteLine("2: Close the door:");
+            Console.WriteLine("3: Lock the door:");
 
+            string doorChoice = Console.ReadLine();
+            door = doorChoice switch
+            {
+                "1" => door.OpenDoor(),
+                "2" => door.CloseDoor(),
+                "3" => door.LockDoor(),
+                "4" => door.UnLockDoor(),
+                "5" => door.ChangeLockCode()
+
+            };
+
+
+        }
 
     }
 
@@ -66,18 +83,30 @@ class Program
 
 class Door
 {
+    
+    private int _lockCode;
 
-    //Constructor
+    public int LockCode { get => LockCode; set => LockCode = value; }
+    
+    
+    public Door(int lockCode)
+    {
+        LockCode = lockCode;
+    }
+
+
+    
+    
+    
     
 
-
-    DoorState currentDoorState = DoorState.Open;
+    public DoorState CurrentDoorState = DoorState.Open;
 
 
     public DoorState GetDoorState()
     {
 
-        return currentDoorState;
+        return CurrentDoorState;
 
     }
 
@@ -85,40 +114,87 @@ class Door
 
 
     // Opening the door
-    public void OpenDoor()
+    public Door OpenDoor()
     {
-        if (currentDoorState == DoorState.Closed)
+        switch (CurrentDoorState)
         {
-
-            currentDoorState = DoorState.Open;
-            Console.WriteLine("The door is now open");
-
-        }else if (currentDoorState == DoorState.Locked)
-        {
-            Console.WriteLine("The door is locked, please enter the keycode to enter:");
-
-
-            // code to enter keycode
+            case DoorState.Closed:
+                CurrentDoorState = DoorState.Open;
+                Console.WriteLine("The door is now open");
+                break;
+            case DoorState.Locked:
+                Console.WriteLine("The door is locked.");
 
 
-
-        } else
-        {
-            Console.WriteLine("The door was already open...");
-
+                // code to enter keycode
+                break;
+            default:
+                Console.WriteLine("The door was already open...");
+                break;
         }
+        
+        return this;
+    }
 
-
-
-
+    public Door CloseDoor()
+    {
+        switch (CurrentDoorState)
+        {
+            case DoorState.Open:
+                CurrentDoorState = DoorState.Closed;
+                Console.WriteLine("The door is now closed");
+                break;
+            case DoorState.Locked:
+                Console.WriteLine("The door is closed and locked.");
+                break;
+            default:
+                Console.WriteLine("The door was already closed...");
+                break;
+        }
+        
+        return this;
     }
 
 
+    public Door LockDoor()
+    {
+        CurrentDoorState = DoorState.Locked; 
+        Console.WriteLine("The door is now locked"); 
+        return this;
+        
+    }
+    
+    public Door UnLockDoor()
+    {
+
+
+        CurrentDoorState = DoorState.Unlocked; 
+        Console.WriteLine("The door is now locked"); 
+        return this;
+        
+    }
+
+    public Door ChangeLockCode()
+    {
+        Console.WriteLine("Please enter the old lock code:");
+        var userInput = Convert.ToInt32(Console.ReadLine());
+        
+
+
+        return this;
+
+    }
+    
+    
+    
+    
+    
   public enum DoorState
     {
         Open,
         Closed,
-        Locked
+        Locked,
+        Unlocked
     }
 
     
